@@ -7,7 +7,7 @@ from app.models import (
     Severity,
     Department
 )
-from app.services import test_ai_connection
+from app.services import test_ai_connection, analyze_ticket_service
 
 router = APIRouter()
 
@@ -25,14 +25,4 @@ async def test_ai():
 
 @router.post("/analyze-ticket", response_model=TicketResponse)
 async def analyze_ticket(request: TicketRequest):
-    return TicketResponse(
-        ticket_id=request.ticket_id,
-        evidence_verdict=EvidenceVerdict.insufficient_data,
-        case_type=CaseType.other,
-        severity=Severity.low,
-        department=Department.customer_support,
-        agent_summary="Placeholder summary",
-        recommended_next_action="Review",
-        customer_reply="Placeholder reply",
-        human_review_required=False
-    )
+    return analyze_ticket_service(request)
