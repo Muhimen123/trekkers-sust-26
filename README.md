@@ -7,12 +7,17 @@
 * Python 3.10+
 * Git
 
-### Clone the Repository
+## Repository
+
+GitHub Repository: https://github.com/Muhimen123/trekkers-sust-26
+
+## Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Muhimen123/trekkers-sust-26.git
 cd trekkers-sust-26
 ```
+
 
 ### Create and Activate a Virtual Environment
 
