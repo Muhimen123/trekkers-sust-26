@@ -7,6 +7,7 @@ from app.models import (
     Severity,
     Department
 )
+from app.services import test_ai_connection
 
 router = APIRouter()
 
@@ -14,6 +15,12 @@ router = APIRouter()
 @router.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+
+@router.get("/test-ai")
+async def test_ai():
+    result = test_ai_connection()
+    return {"message": "AI test complete.", "ai_response": result}
 
 
 @router.post("/analyze-ticket", response_model=TicketResponse)
