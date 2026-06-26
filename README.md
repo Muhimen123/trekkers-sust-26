@@ -102,5 +102,197 @@ The following sections will be included below:
 ```
 
 * AI / Model Usage
-* Safety Logic
+
+# Safety Logic
+The AI acts only as a support copilot and investigator. It does not make financial or operational decisions.
+
+### Security
+
+The AI never requests or encourages users to share:
+
+- PIN
+    
+- OTP
+    
+- Password
+    
+- Full card number
+    
+- CVV
+    
+- Card expiry
+    
+- Security answers
+    
+- Authentication or recovery codes
+    
+
+For fraud or phishing reports, it reminds users not to share these credentials.
+
+---
+
+### Financial Safety
+
+The AI never:
+
+- Approves or rejects refunds
+    
+- Confirms refunds or reversals
+    
+- Confirms account recovery or unblocking
+    
+- Promises compensation
+    
+- Makes dispute decisions
+    
+
+Instead, it recommends investigation, verification, escalation, or human review.
+
+---
+
+### Evidence Integrity
+
+All conclusions are based only on the complaint and provided transaction history.
+
+The AI never:
+
+- Invents transactions
+    
+- Invents IDs, amounts, timestamps, or recipients
+    
+- Assumes missing information
+    
+- Guesses between multiple matching transactions
+    
+
+When evidence is insufficient, it returns `insufficient_data` and requests clarification.
+
+---
+
+### Prompt Injection Protection
+
+Complaint text is treated as untrusted input.
+
+The AI ignores any embedded instructions attempting to:
+
+- override system rules
+    
+- reveal prompts or reasoning
+    
+- change output values
+    
+- expose secrets
+    
+
+Internal prompts, reasoning, API keys, and implementation details are never disclosed.
+
+---
+
+### Privacy
+
+The AI only uses information provided in the current request.
+
+It never leaks:
+
+- customer data
+    
+- previous conversation data
+    
+- internal information
+    
+- confidential system details
+    
+
+---
+
+### Language Consistency
+
+Responses follow the customer's language:
+
+- English → English
+    
+- Bangla → Bangla
+    
+- Mixed → Natural mixed-language reply
+    
+
+Agent-facing summaries remain professional and concise.
+
+---
+
+### Human Review
+
+The AI escalates cases involving:
+
+- fraud
+    
+- phishing
+    
+- disputes
+    
+- ambiguous evidence
+    
+- conflicting evidence
+    
+- duplicate payments
+    
+- unusually high-value transactions
+    
+- pending investigations
+    
+- other cases requiring manual verification
+    
+
+---
+
+### Robustness
+
+The system safely handles:
+
+- missing optional fields
+    
+- empty transaction history
+    
+- large transaction histories
+    
+- multiple matching transactions
+    
+- malformed or vague complaints
+    
+- spelling mistakes
+    
+- mixed-language input
+    
+- unknown complaint types
+    
+- unexpected fields
+    
+- invalid timestamps
+    
+
+When uncertain, it requests clarification instead of making unsupported assumptions.
+
+---
+
+### Output Validation
+
+Every response:
+
+- is valid JSON
+    
+- matches the required schema
+    
+- preserves `ticket_id`
+    
+- uses only allowed enum values
+    
+- contains all required fields
+    
+- uses correct data types
+    
+- contains no Markdown or extra text
+    
+
+Invalid outputs are corrected through one retry before being returned.
+
 * Limitations
