@@ -4,12 +4,17 @@ import litellm
 from dotenv import load_dotenv
 from app.models import TicketRequest, TicketResponse
 
+from pathlib import Path
+
 # Load environment variables from .env file
 load_dotenv()
 
+# Read the system prompt from the external file
+SYSTEM_PROMPT = Path("system_prompt.md").read_text(encoding="utf-8")
+
 # Setup Instructor with LiteLLM to handle structured output
 # instructor.from_litellm patches litellm.completion to work with Instructor
-client = instructor.from_litellm(litellm.completion)
+client = instructor.from_litellm(litellm.completion, mode=instructor.Mode.JSON)
 
 def test_ai_connection() -> str:
     """
@@ -35,21 +40,25 @@ def test_ai_connection() -> str:
 def analyze_ticket_service(request: TicketRequest) -> TicketResponse:
     """
     Analyzes a support ticket using an LLM.
-    The LLM is prompted to return a response matching the TicketResponse Pydantic model.
+    Uses the system prompt from system_prompt.md and ensures
+    the response matches the TicketResponse Pydantic model.
     """
     model = os.getenv("LLM_MODEL", "ollama/llama3.1")
     
+    # Send request to AI
+    # Instructor ensures the response matches the TicketResponse schema
     response = client.chat.completions.create(
         model=model,
         response_model=TicketResponse,
+        max_tokens=4096,
         messages=[
             {
                 "role": "system", 
-                "content": "You are an expert ticket analyzer. Analyze the provided ticket data and return a JSON object that strictly adheres to the TicketResponse schema."
+                "content": SYSTEM_PROMPT
             },
             {
                 "role": "user", 
-                "content": f"Analyze this ticket: {request.model_dump_json()}"
+                "content": request.model_dump_json()
             }
         ]
     )
